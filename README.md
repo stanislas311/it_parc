@@ -25,11 +25,11 @@ Module Odoo 18 pour la gestion complète du parc informatique : équipements, in
 - `pip install xlsxwriter`
 - Modules : `base`, `mail`, `web`, `hr`, `stock`, `purchase`, `account`, `maintenance`, `contacts`
 
-## Installation
+## Lancement et Installation
 
 ```bash
 pip install xlsxwriter
-python odoo-bin --addons-path="addons,CHEMIN_VERS/it_parc" -d votre_base -u it_parc --stop-after-init
+python -m odoo -r odoo -w odoo -d odoo_enterprise --addons-path="odoo/addons,D:\PC STANN\Projet fin de module\IT_parc_Odoo" -u it_parc --dev xml
 ```
 
 Puis dans Odoo : **Apps → Mettre à jour la liste → Installer "IT Parc"**.
