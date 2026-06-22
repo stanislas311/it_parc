@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Interventions -->
+        <menuitem id="menu_it_intervention" name="Interventions" parent="menu_it_parc_root" sequence="3"
+                  groups="it_parc.group_it_technicien"/>
+        
+        <record id="action_it_intervention" model="ir.actions.act_window">
+            <field name="name">Interventions</field>
+            <field name="res_model">it.intervention</field>
+            <field name="view_mode">list,form,calendar</field>
+            <field name="groups_id" eval="[(4, ref('group_it_technicien'))]"/>
+        </record>
+        
+        <menuitem id="menu_it_intervention_action" name="Toutes les interventions" 
+                  parent="menu_it_intervention" action="action_it_intervention" sequence="1"
+                  groups="it_parc.group_it_technicien"/>
+
+        <!-- Tree View Intervention -->
+        <record id="view_it_intervention_tree" model="ir.ui.view">
+            <field name="name">it.intervention.tree</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <list string="Interventions">
+                    <field name="name"/>
+                    <field name="equipment_id"/>
+                    <field name="technician_id"/>
+                    <field name="type"/>
+                    <field name="date_start"/>
+                    <field name="duration"/>
+                    <field name="cost"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View Intervention -->
+        <record id="view_it_intervention_form" model="ir.ui.view">
+            <field name="name">it.intervention.form</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <form string="Intervention">
+                    <header>
+                        <button name="action_start" string="Démarrer" type="object" 
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_done" string="Terminer" type="object" 
+                                invisible="state != 'in_progress'"/>
+                        <button name="action_cancel" string="Annuler" type="object" 
+                                invisible="state == 'done'"/>
+                        <button name="action_export_costs_excel" string="Export Excel coûts" type="object" 
+                                class="btn-secondary"/>
+                        <button name="action_print_maintenance_report" string="Rapport PDF période" type="object"
+                                class="btn-secondary"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="equipment_id"/>
+                                <field name="technician_id"/>
+                                <field name="type"/>
+                            </group>
+                            <group>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="duration" readonly="1"/>
+                                <field name="cost"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Rapport">
+                                <field name="report"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Calendar View Intervention -->
+        <record id="view_it_intervention_calendar" model="ir.ui.view">
+            <field name="name">it.intervention.calendar</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <calendar string="Calendrier des interventions" date_start="date_start" date_stop="date_end" color="type">
+                    <field name="name"/>
+                    <field name="equipment_id"/>
+                    <field name="technician_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Search View Intervention -->
+        <record id="view_it_intervention_search" model="ir.ui.view">
+            <field name="name">it.intervention.search</field>
+            <field name="model">it.intervention</field>
+            <field name="arch" type="xml">
+                <search string="Rechercher interventions">
+                    <field name="name"/>
+                    <field name="equipment_id"/>
+                    <field name="technician_id"/>
+                    <filter string="Corrective" name="filter_corrective" domain="[('type', '=', 'corrective')]"/>
+                    <filter string="Préventive" name="filter_preventive" domain="[('type', '=', 'preventive')]"/>
+                    <filter string="En cours" name="filter_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Terminée" name="filter_done" domain="[('state', '=', 'done')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Type" name="group_type" domain="[]" context="{'group_by': 'type'}"/>
+                        <filter string="Technicien" name="group_technician" domain="[]" context="{'group_by': 'technician_id'}"/>
+                        <filter string="État" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_it_inventory" model="ir.actions.report">
+            <field name="name">Rapport d'Inventaire</field>
+            <field name="model">it.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">it_parc.report_it_inventory_template</field>
+            <field name="report_file">it_inventory</field>
+        </record>
+
+        <template id="report_it_inventory_template">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <div class="row mb-3" style="border-bottom: 3px solid #1B4F72; padding-bottom: 10px;">
+                        <div class="col-8">
+                            <h2 style="color: #1B4F72; margin: 0;">TECHPARK CI</h2>
+                            <small style="color: #666;">Rapport d'Inventaire IT — Direction des Systèmes d'Information</small>
+                        </div>
+                        <div class="col-4 text-end">
+                            <small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Département :</strong> <t t-esc="department_name"/>
+                        &#160;|&#160;
+                        <strong>Catégorie :</strong> <t t-esc="category_name"/>
+                    </div>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead style="background: #1B4F72; color: white;">
+                            <tr>
+                                <th>N° Série</th>
+                                <th>Catégorie</th>
+                                <th>Marque</th>
+                                <th>Modèle</th>
+                                <th>Localisation</th>
+                                <th>Département</th>
+                                <th>État</th>
+                                <th>Fin garantie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="equipment">
+                                <tr>
+                                    <td t-esc="equipment.name"/>
+                                    <td t-esc="equipment.category_id.name"/>
+                                    <td t-esc="equipment.brand"/>
+                                    <td t-esc="equipment.model"/>
+                                    <td t-esc="equipment.location"/>
+                                    <td t-esc="equipment.department_id.name"/>
+                                    <td t-esc="dict(equipment._fields['state'].get_selection(equipment.env))[equipment.state]"/>
+                                    <td t-esc="equipment.warranty_end_date"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p class="mt-3"><strong>Total équipements :</strong> <t t-esc="len(docs)"/></p>
+                    <div class="text-center mt-4" style="font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 8px;">
+                        TECHPARK CI — Abidjan-Cocody | Module IT Parc
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

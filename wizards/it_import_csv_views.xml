@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Import CSV -->
+        <record id="action_it_import_csv" model="ir.actions.act_window">
+            <field name="name">Import CSV</field>
+            <field name="res_model">it.import.csv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_it_import_csv" name="Import CSV" 
+                  parent="menu_it_equipment" action="action_it_import_csv" sequence="10"
+                  groups="it_parc.group_it_manager"/>
+
+        <record id="view_it_import_csv_form" model="ir.ui.view">
+            <field name="name">it.import.csv.form</field>
+            <field name="model">it.import.csv</field>
+            <field name="arch" type="xml">
+                <form string="Import CSV d'équipements">
+                    <group>
+                        <group>
+                            <field name="csv_file"/>
+                            <field name="csv_filename" readonly="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_import" string="Importer" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                    <group invisible="not import_result">
+                        <field name="import_result" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_it_maintenance" model="ir.actions.report">
+            <field name="name">Historique des Maintenances</field>
+            <field name="model">it.intervention</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">it_parc.report_it_maintenance_template</field>
+            <field name="report_file">it_maintenance_history</field>
+        </record>
+
+        <template id="report_it_maintenance_template">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <div class="row mb-3" style="border-bottom: 3px solid #1B4F72; padding-bottom: 10px;">
+                        <div class="col-8">
+                            <h2 style="color: #1B4F72; margin: 0;">TECHPARK CI</h2>
+                            <small style="color: #666;">Historique des Maintenances — Direction des Systèmes d'Information</small>
+                        </div>
+                        <div class="col-4 text-end">
+                            <small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </div>
+                    </div>
+                    <t t-if="date_from and date_to">
+                        <p><strong>Période :</strong> du <t t-esc="date_from"/> au <t t-esc="date_to"/></p>
+                    </t>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead style="background: #1B4F72; color: white;">
+                            <tr>
+                                <th>Réf.</th>
+                                <th>Équipement</th>
+                                <th>Technicien</th>
+                                <th>Type</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Durée (h)</th>
+                                <th>Coût (FCFA)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="intervention">
+                                <tr>
+                                    <td t-esc="intervention.name"/>
+                                    <td t-esc="intervention.equipment_id.name"/>
+                                    <td t-esc="intervention.technician_id.name"/>
+                                    <td t-esc="dict(intervention._fields['type'].get_selection(intervention.env))[intervention.type]"/>
+                                    <td t-esc="intervention.date_start"/>
+                                    <td t-esc="intervention.date_end"/>
+                                    <td t-esc="'%.2f' % intervention.duration"/>
+                                    <td t-esc="'{:,.0f}'.format(intervention.cost or 0)"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot style="background: #EBF5FB; font-weight: bold;">
+                            <tr>
+                                <td colspan="7" class="text-end">Coût total</td>
+                                <td t-esc="'{:,.0f}'.format(total_cost)"/>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p class="mt-2"><strong>Total interventions :</strong> <t t-esc="len(docs)"/></p>
+                    <div class="text-center mt-4" style="font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 8px;">
+                        TECHPARK CI — Abidjan-Cocody | Module IT Parc
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

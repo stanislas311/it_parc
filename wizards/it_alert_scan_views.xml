@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Scan Alertes -->
+        <record id="action_it_alert_scan" model="ir.actions.act_window">
+            <field name="name">Scan des alertes</field>
+            <field name="res_model">it.alert.scan</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_it_alert_scan" name="Scan manuel" 
+                  parent="menu_it_alerte" action="action_it_alert_scan" sequence="10"
+                  groups="it_parc.group_it_manager"/>
+
+        <record id="view_it_alert_scan_form" model="ir.ui.view">
+            <field name="name">it.alert.scan.form</field>
+            <field name="model">it.alert.scan</field>
+            <field name="arch" type="xml">
+                <form string="Scan manuel des alertes">
+                    <group>
+                        <group>
+                            <field name="warranty_threshold"/>
+                            <field name="contract_threshold"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_scan" string="Scanner" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                    <group invisible="not scan_result">
+                        <field name="scan_result" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

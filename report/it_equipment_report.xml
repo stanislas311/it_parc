@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_it_equipment_card" model="ir.actions.report">
+            <field name="name">Fiche Équipement</field>
+            <field name="model">it.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">it_parc.report_it_equipment_card_template</field>
+            <field name="report_file">it_equipment_card</field>
+            <field name="binding_model_id" ref="model_it_equipment"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Fiche_%s' % (object.name)</field>
+        </record>
+
+        <template id="report_it_equipment_card_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="equipment">
+                    <div class="page">
+                        <div class="row mb-3" style="border-bottom: 3px solid #1B4F72; padding-bottom: 10px;">
+                            <div class="col-8">
+                                <h2 style="color: #1B4F72; margin: 0;">TECHPARK CI</h2>
+                                <small style="color: #666;">Fiche Équipement IT — Direction des Systèmes d'Information</small>
+                            </div>
+                            <div class="col-4 text-end">
+                                <small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                            </div>
+                        </div>
+                        <h3 style="color: #2874A6;" t-esc="equipment.name"/>
+                        <table class="table table-sm table-bordered mt-3">
+                            <tr style="background: #EBF5FB;">
+                                <th width="35%">Catégorie</th>
+                                <td t-esc="equipment.category_id.name"/>
+                            </tr>
+                            <tr>
+                                <th>Marque / Modèle</th>
+                                <td><t t-esc="equipment.brand"/> <t t-esc="equipment.model"/></td>
+                            </tr>
+                            <tr style="background: #EBF5FB;">
+                                <th>Date d'achat</th>
+                                <td t-esc="equipment.purchase_date"/>
+                            </tr>
+                            <tr>
+                                <th>Fin de garantie</th>
+                                <td t-esc="equipment.warranty_end_date"/>
+                            </tr>
+                            <tr style="background: #EBF5FB;">
+                                <th>Prix d'achat (FCFA)</th>
+                                <td t-esc="'{:,.0f}'.format(equipment.purchase_price or 0)"/>
+                            </tr>
+                            <tr>
+                                <th>Localisation</th>
+                                <td t-esc="equipment.location"/>
+                            </tr>
+                            <tr style="background: #EBF5FB;">
+                                <th>Département</th>
+                                <td t-esc="equipment.department_id.name"/>
+                            </tr>
+                            <tr>
+                                <th>État</th>
+                                <td t-esc="dict(equipment._fields['state'].get_selection(equipment.env))[equipment.state]"/>
+                            </tr>
+                        </table>
+                        <t t-set="current" t-value="equipment.assignment_ids.filtered(lambda a: a.state == 'active')"/>
+                        <t t-if="current">
+                            <h4 style="color: #1B4F72; margin-top: 20px;">Affectation actuelle</h4>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Employé</th>
+                                    <td t-esc="current[0].employee_id.name"/>
+                                </tr>
+                                <tr>
+                                    <th>Département</th>
+                                    <td t-esc="current[0].department_id.name"/>
+                                </tr>
+                                <tr>
+                                    <th>Depuis le</th>
+                                    <td t-esc="current[0].date_start"/>
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-if="equipment.notes">
+                            <h4 style="color: #1B4F72;">Notes</h4>
+                            <p t-esc="equipment.notes"/>
+                        </t>
+                        <div class="text-center mt-5" style="font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 8px;">
+                            Document généré par le module IT Parc — TECHPARK CI, Abidjan
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard -->
+        <menuitem id="menu_it_dashboard" name="Dashboard" parent="menu_it_parc_root" sequence="0"
+                  groups="it_parc.group_it_technicien"/>
+        
+        <record id="action_it_dashboard" model="ir.actions.client">
+            <field name="name">Dashboard IT Parc</field>
+            <field name="tag">it_parc.dashboard</field>
+        </record>
+        
+        <menuitem id="menu_it_dashboard_action" name="Tableau de bord" 
+                  parent="menu_it_dashboard" action="action_it_dashboard" sequence="1"
+                  groups="it_parc.group_it_technicien"/>
+    </data>
+</odoo>

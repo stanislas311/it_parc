@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Catégories d'équipement -->
+        <record id="category_pc" model="it.equipment.category">
+            <field name="name">Ordinateur Portable</field>
+            <field name="description">PC portables pour les employés</field>
+        </record>
+        <record id="category_desktop" model="it.equipment.category">
+            <field name="name">Ordinateur de Bureau</field>
+            <field name="description">PC de bureau fixes</field>
+        </record>
+        <record id="category_server" model="it.equipment.category">
+            <field name="name">Serveur</field>
+            <field name="description">Serveurs informatiques</field>
+        </record>
+        <record id="category_printer" model="it.equipment.category">
+            <field name="name">Imprimante</field>
+            <field name="description">Imprimantes réseau et locales</field>
+        </record>
+        <record id="category_phone" model="it.equipment.category">
+            <field name="name">Téléphone IP</field>
+            <field name="description">Téléphones IP pour la téléphonie</field>
+        </record>
+        <record id="category_network" model="it.equipment.category">
+            <field name="name">Équipement Réseau</field>
+            <field name="description">Switchs, routeurs, points d'accès Wi-Fi</field>
+        </record>
+
+        <!-- Départements (référence aux départements existants ou création) -->
+        <record id="dept_it" model="hr.department">
+            <field name="name">Direction Informatique</field>
+        </record>
+        <record id="dept_rh" model="hr.department">
+            <field name="name">Ressources Humaines</field>
+        </record>
+        <record id="dept_compta" model="hr.department">
+            <field name="name">Comptabilité</field>
+        </record>
+
+        <!-- Employés TECHPARK CI -->
+        <record id="employee_tech1" model="hr.employee">
+            <field name="name">Kouassi N'Guessan</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="job_title">Technicien IT Senior</field>
+        </record>
+        <record id="employee_tech2" model="hr.employee">
+            <field name="name">Aya Traoré</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="job_title">Technicienne IT</field>
+        </record>
+        <record id="employee_user1" model="hr.employee">
+            <field name="name">Yao Koné</field>
+            <field name="department_id" ref="dept_rh"/>
+            <field name="job_title">Chargé de RH</field>
+        </record>
+
+        <!-- Fournisseurs -->
+        <record id="supplier_dell" model="res.partner">
+            <field name="name">Dell Inc.</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+        </record>
+        <record id="supplier_hp" model="res.partner">
+            <field name="name">HP Inc.</field>
+            <field name="supplier_rank">1</field>
+            <field name="is_company">True</field>
+        </record>
+
+        <!-- Équipements (10+) -->
+        <record id="equipment_1" model="it.equipment">
+            <field name="name">DELL-LAT-001</field>
+            <field name="category_id" ref="category_pc"/>
+            <field name="brand">Dell</field>
+            <field name="model">Latitude 7420</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=730)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">1200.00</field>
+            <field name="location">Site Cocody — Bureau DSI-101</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">assigned</field>
+        </record>
+        <record id="equipment_2" model="it.equipment">
+            <field name="name">DELL-LAT-002</field>
+            <field name="category_id" ref="category_pc"/>
+            <field name="brand">Dell</field>
+            <field name="model">Latitude 7420</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=300)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=765)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">1200.00</field>
+            <field name="location">Site Cocody — Bureau RH-102</field>
+            <field name="department_id" ref="dept_rh"/>
+            <field name="state">assigned</field>
+        </record>
+        <record id="equipment_3" model="it.equipment">
+            <field name="name">HP-DESK-001</field>
+            <field name="category_id" ref="category_desktop"/>
+            <field name="brand">HP</field>
+            <field name="model">EliteDesk 800</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=500)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=565)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">800.00</field>
+            <field name="location">Site Plateau — Comptabilité 201</field>
+            <field name="department_id" ref="dept_compta"/>
+            <field name="state">assigned</field>
+        </record>
+        <record id="equipment_4" model="it.equipment">
+            <field name="name">HP-DESK-002</field>
+            <field name="category_id" ref="category_desktop"/>
+            <field name="brand">HP</field>
+            <field name="model">EliteDesk 800</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=450)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=615)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">800.00</field>
+            <field name="location">Site Plateau — Open Space 202</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="equipment_5" model="it.equipment">
+            <field name="name">DELL-SRV-001</field>
+            <field name="category_id" ref="category_server"/>
+            <field name="brand">Dell</field>
+            <field name="model">PowerEdge R740</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=700)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=365)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">5000.00</field>
+            <field name="location">Site Cocody — Salle serveurs</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="equipment_6" model="it.equipment">
+            <field name="name">DELL-SRV-002</field>
+            <field name="category_id" ref="category_server"/>
+            <field name="brand">Dell</field>
+            <field name="model">PowerEdge R740</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=650)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=415)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">5000.00</field>
+            <field name="location">Site Cocody — Salle serveurs</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="equipment_7" model="it.equipment">
+            <field name="name">HP-PRT-001</field>
+            <field name="category_id" ref="category_printer"/>
+            <field name="brand">HP</field>
+            <field name="model">LaserJet Pro M404dn</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=200)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=865)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">350.00</field>
+            <field name="location">Site Cocody — Couloir RDC</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="equipment_8" model="it.equipment">
+            <field name="name">HP-PRT-002</field>
+            <field name="category_id" ref="category_printer"/>
+            <field name="brand">HP</field>
+            <field name="model">LaserJet Pro M404dn</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=180)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=885)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">350.00</field>
+            <field name="location">Antenne Bouaké — Accueil</field>
+            <field name="department_id" ref="dept_rh"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="equipment_9" model="it.equipment">
+            <field name="name">CISCO-PHONE-001</field>
+            <field name="category_id" ref="category_phone"/>
+            <field name="brand">Cisco</field>
+            <field name="model">IP Phone 7841</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=150)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=915)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">200.00</field>
+            <field name="location">Site Cocody — Bureau DSI-101</field>
+            <field name="department_id" ref="dept_it"/>
+            <field name="state">assigned</field>
+        </record>
+        <record id="equipment_10" model="it.equipment">
+            <field name="name">CISCO-PHONE-002</field>
+            <field name="category_id" ref="category_phone"/>
+            <field name="brand">Cisco</field>
+            <field name="model">IP Phone 7841</field>
+            <field name="purchase_date" eval="(datetime.now() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
+            <field name="warranty_end_date" eval="(datetime.now() + timedelta(days=945)).strftime('%Y-%m-%d')"/>
+            <field name="purchase_price">200.00</field>
+            <field name="location">Site Cocody — Bureau RH-102</field>
+            <field name="department_id" ref="dept_rh"/>
+            <field name="state">assigned</field>
+        </record>
+
+        <!-- Affectations -->
+        <record id="assignment_1" model="it.assignment">
+            <field name="equipment_id" ref="equipment_1"/>
+            <field name="employee_id" ref="employee_tech1"/>
+            <field name="department_id" ref="dept_it"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">active</field>
+        </record>
+        <record id="assignment_2" model="it.assignment">
+            <field name="equipment_id" ref="equipment_2"/>
+            <field name="employee_id" ref="employee_user1"/>
+            <field name="department_id" ref="dept_rh"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=25)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Contrats (3+) -->
+        <record id="contract_1" model="it.contract">
+            <field name="name">MAINT-DELL-2024</field>
+            <field name="supplier_id" ref="supplier_dell"/>
+            <field name="type">maintenance</field>
+            <field name="start_date" eval="(datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
+            <field name="end_date" eval="(datetime.now() + timedelta(days=275)).strftime('%Y-%m-%d')"/>
+            <field name="amount">2500.00</field>
+            <field name="equipment_ids" eval="[(6, 0, [ref('equipment_1'), ref('equipment_2'), ref('equipment_5')])]"/>
+            <field name="notes">Contrat de maintenance annuel pour les équipements Dell</field>
+        </record>
+        <record id="contract_2" model="it.contract">
+            <field name="name">MAINT-HP-2024</field>
+            <field name="supplier_id" ref="supplier_hp"/>
+            <field name="type">maintenance</field>
+            <field name="start_date" eval="(datetime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="end_date" eval="(datetime.now() + timedelta(days=305)).strftime('%Y-%m-%d')"/>
+            <field name="amount">1800.00</field>
+            <field name="equipment_ids" eval="[(6, 0, [ref('equipment_3'), ref('equipment_4'), ref('equipment_7')])]"/>
+            <field name="notes">Contrat de maintenance annuel pour les équipements HP</field>
+        </record>
+        <record id="contract_3" model="it.contract">
+            <field name="name">LIC-OFFICE-2024</field>
+            <field name="supplier_id" ref="supplier_dell"/>
+            <field name="type">license</field>
+            <field name="start_date" eval="(datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="end_date" eval="(datetime.now() + timedelta(days=335)).strftime('%Y-%m-%d')"/>
+            <field name="amount">5000.00</field>
+            <field name="notes">Licence Microsoft Office pour 50 utilisateurs</field>
+        </record>
+
+        <!-- Interventions (5+) -->
+        <record id="intervention_1" model="it.intervention">
+            <field name="name">INT-00001</field>
+            <field name="equipment_id" ref="equipment_1"/>
+            <field name="technician_id" ref="employee_tech1"/>
+            <field name="type">corrective</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="date_end" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="cost">50.00</field>
+            <field name="description">Remplacement de la batterie</field>
+            <field name="report">Batterie remplacée avec succès. Équipement testé et fonctionnel.</field>
+            <field name="state">done</field>
+        </record>
+        <record id="intervention_2" model="it.intervention">
+            <field name="name">INT-00002</field>
+            <field name="equipment_id" ref="equipment_3"/>
+            <field name="technician_id" ref="employee_tech2"/>
+            <field name="type">preventive</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="date_end" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="cost">30.00</field>
+            <field name="description">Maintenance préventive mensuelle</field>
+            <field name="report">Nettoyage interne, vérification des composants, mise à jour des pilotes.</field>
+            <field name="state">done</field>
+        </record>
+        <record id="intervention_3" model="it.intervention">
+            <field name="name">INT-00003</field>
+            <field name="equipment_id" ref="equipment_5"/>
+            <field name="technician_id" ref="employee_tech1"/>
+            <field name="type">corrective</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="date_end" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="cost">150.00</field>
+            <field name="description">Remplacement disque dur défaillant</field>
+            <field name="report">Disque dur remplacé. Données restaurées depuis la sauvegarde.</field>
+            <field name="state">done</field>
+        </record>
+        <record id="intervention_4" model="it.intervention">
+            <field name="name">INT-00004</field>
+            <field name="equipment_id" ref="equipment_7"/>
+            <field name="technician_id" ref="employee_tech2"/>
+            <field name="type">preventive</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="date_end" eval="(datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="cost">25.00</field>
+            <field name="description">Maintenance préventive imprimante</field>
+            <field name="report">Nettoyage des têtes d'impression, vérification des niveaux d'encre.</field>
+            <field name="state">done</field>
+        </record>
+        <record id="intervention_5" model="it.intervention">
+            <field name="name">INT-00005</field>
+            <field name="equipment_id" ref="equipment_2"/>
+            <field name="technician_id" ref="employee_tech1"/>
+            <field name="type">corrective</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="date_end" eval="(datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="cost">75.00</field>
+            <field name="description">Réinstallation système d'exploitation</field>
+            <field name="report">Windows réinstallé avec tous les pilotes nécessaires. Données utilisateur préservées.</field>
+            <field name="state">done</field>
+        </record>
+    </data>
+</odoo>

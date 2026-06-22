@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Alertes -->
+        <menuitem id="menu_it_alerte" name="Alertes" parent="menu_it_parc_root" sequence="5"
+                  groups="it_parc.group_it_technicien"/>
+        
+        <record id="action_it_alerte" model="ir.actions.act_window">
+            <field name="name">Alertes</field>
+            <field name="res_model">it.alerte</field>
+            <field name="view_mode">list,form</field>
+            <field name="groups_id" eval="[(4, ref('group_it_technicien'))]"/>
+        </record>
+        
+        <menuitem id="menu_it_alerte_action" name="Toutes les alertes" 
+                  parent="menu_it_alerte" action="action_it_alerte" sequence="1"
+                  groups="it_parc.group_it_technicien"/>
+
+        <!-- Tree View Alerte -->
+        <record id="view_it_alerte_tree" model="ir.ui.view">
+            <field name="name">it.alerte.tree</field>
+            <field name="model">it.alerte</field>
+            <field name="arch" type="xml">
+                <list string="Alertes">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="severity"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View Alerte -->
+        <record id="view_it_alerte_form" model="ir.ui.view">
+            <field name="name">it.alerte.form</field>
+            <field name="model">it.alerte</field>
+            <field name="arch" type="xml">
+                <form string="Alerte">
+                    <header>
+                        <button name="action_acknowledge" string="Reconnaître" type="object" 
+                                invisible="state != 'new'"/>
+                        <button name="action_resolve" string="Résoudre" type="object" 
+                                invisible="state == 'resolved'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="severity"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="equipment_id" invisible="type == 'contract'"/>
+                                <field name="contract_id" invisible="type == 'warranty'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View Alerte -->
+        <record id="view_it_alerte_search" model="ir.ui.view">
+            <field name="name">it.alerte.search</field>
+            <field name="model">it.alerte</field>
+            <field name="arch" type="xml">
+                <search string="Rechercher alertes">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <filter string="Garantie" name="filter_warranty" domain="[('type', '=', 'warranty')]"/>
+                    <filter string="Contrat" name="filter_contract" domain="[('type', '=', 'contract')]"/>
+                    <filter string="Maintenance" name="filter_maintenance" domain="[('type', '=', 'maintenance')]"/>
+                    <filter string="Nouvelle" name="filter_new" domain="[('state', '=', 'new')]"/>
+                    <filter string="Haute sévérité" name="filter_high" domain="[('severity', '=', 'high')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Type" name="group_type" domain="[]" context="{'group_by': 'type'}"/>
+                        <filter string="Sévérité" name="group_severity" domain="[]" context="{'group_by': 'severity'}"/>
+                        <filter string="État" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

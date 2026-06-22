@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_it_assignment_reassign_form" model="ir.ui.view">
+            <field name="name">it.assignment.reassign.form</field>
+            <field name="model">it.assignment.reassign</field>
+            <field name="arch" type="xml">
+                <form string="Réaffectation d'équipement">
+                    <group>
+                        <group string="Affectation actuelle">
+                            <field name="assignment_id" readonly="1"/>
+                            <field name="equipment_id"/>
+                            <field name="current_employee_id"/>
+                            <field name="current_department_id"/>
+                        </group>
+                        <group string="Nouvelle affectation">
+                            <field name="new_employee_id"/>
+                            <field name="new_department_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason" placeholder="Motif de la réaffectation (obligatoire)..."/>
+                    </group>
+                    <footer>
+                        <button name="action_reassign" string="Confirmer la réaffectation" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

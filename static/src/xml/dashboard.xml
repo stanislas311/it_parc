@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="it_parc.DashboardTemplate" owl="1">
+        <Layout display="{ controlPanel: {} }" className="'o_action o_view_controller'">
+            <div class="o_content bg-view h-100 p-3 overflow-auto">
+                <div class="container-fluid p-0">
+                    
+                    <div t-if="state.loading" class="text-center p-5 text-muted">
+                        <i class="fa fa-spinner fa-spin fa-2x mb-3"/>
+                        <p>Chargement du tableau de bord...</p>
+                    </div>
+
+                    <t t-else="">
+                        <!-- KPI Row -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3">
+                                <div class="card h-100 cursor-pointer shadow-sm border-0" t-on-click="() => this.navigateToEquipment()">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-muted text-uppercase fw-bold mb-0">Parc total</h6>
+                                            <div class="d-flex align-items-center justify-content-center rounded bg-light" style="width: 48px; height: 48px;">
+                                                <i class="fa fa-2x fa-desktop text-primary"/>
+                                            </div>
+                                        </div>
+                                        <h2 class="display-6 fw-bold mb-1"><t t-esc="state.kpis.totalEquipment"/></h2>
+                                        <p class="text-muted small mb-0"><t t-esc="state.kpis.assignedEquipment"/> affectés</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100 cursor-pointer shadow-sm border-0" t-on-click="navigateToContracts">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-muted text-uppercase fw-bold mb-0">Contrats</h6>
+                                            <div class="d-flex align-items-center justify-content-center rounded bg-light" style="width: 48px; height: 48px;">
+                                                <i class="fa fa-2x fa-file-contract text-success"/>
+                                            </div>
+                                        </div>
+                                        <h2 class="display-6 fw-bold mb-1"><t t-esc="state.kpis.activeContracts"/></h2>
+                                        <p class="text-muted small mb-0">Contrats actifs</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100 cursor-pointer shadow-sm border-0" t-on-click="navigateToInterventions">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-muted text-uppercase fw-bold mb-0">Maintenance</h6>
+                                            <div class="d-flex align-items-center justify-content-center rounded bg-light" style="width: 48px; height: 48px;">
+                                                <i class="fa fa-2x fa-wrench text-warning"/>
+                                            </div>
+                                        </div>
+                                        <h2 class="display-6 fw-bold mb-1"><t t-esc="state.kpis.pendingInterventions"/></h2>
+                                        <p class="text-muted small mb-0"><t t-esc="state.kpis.maintenanceEquipment"/> en maintenance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100 cursor-pointer shadow-sm border-0" t-on-click="navigateToAlerts">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="text-muted text-uppercase fw-bold mb-0">Alertes</h6>
+                                            <div class="d-flex align-items-center justify-content-center rounded bg-light" style="width: 48px; height: 48px;">
+                                                <i class="fa fa-2x fa-bell text-danger"/>
+                                            </div>
+                                        </div>
+                                        <h2 class="display-6 fw-bold mb-1"><t t-esc="state.kpis.activeAlerts"/></h2>
+                                        <p class="text-danger small fw-bold mb-0" t-if="state.kpis.highAlerts"><i class="fa fa-exclamation-circle"/> <t t-esc="state.kpis.highAlerts"/> critiques</p>
+                                        <p class="text-muted small mb-0" t-else="">Non traitées</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Row -->
+                        <div class="row g-4">
+                            <div class="col-md-7">
+                                <div class="card shadow-sm border-0 h-100">
+                                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                                        <h5 class="card-title mb-0">Répartition par catégorie</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <t t-if="state.chartData.length === 0">
+                                            <div class="text-center text-muted p-5">Aucune donnée disponible</div>
+                                        </t>
+                                        <t t-foreach="state.chartData" t-as="data" t-key="data.label">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1 small">
+                                                    <span class="text-muted"><t t-esc="data.label"/></span>
+                                                    <span class="fw-bold"><t t-esc="data.value"/></span>
+                                                </div>
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-primary" role="progressbar" t-att-style="'width: ' + data.percent + '%'"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card shadow-sm border-0 h-100">
+                                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                                        <h5 class="card-title mb-0">État du parc</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush border-top-0">
+                                            <t t-foreach="state.stateData" t-as="item" t-key="item.state">
+                                                <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3" t-on-click="() => this.navigateToEquipment([['state', '=', item.state]])">
+                                                    <span class="text-muted"><t t-esc="item.label"/></span>
+                                                    <span class="badge rounded-pill" t-attf-class="{{
+                                                        item.state === 'draft' ? 'text-bg-info' :
+                                                        item.state === 'assigned' ? 'text-bg-success' :
+                                                        item.state === 'maintenance' ? 'text-bg-warning' :
+                                                        'text-bg-danger'
+                                                    }}"><t t-esc="item.value"/></span>
+                                                </button>
+                                            </t>
+                                            <t t-if="state.stateData.length === 0">
+                                                <div class="text-center text-muted p-5">Aucune donnée disponible</div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dernières Interventions Row -->
+                        <div class="row mt-1 g-4">
+                            <div class="col-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-white pt-3 pb-2 border-0 d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">Dernières interventions</h5>
+                                        <button class="btn btn-sm btn-light" t-on-click="navigateToInterventions">Voir tout</button>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-light text-muted small">
+                                                    <tr>
+                                                        <th class="ps-3">Référence</th>
+                                                        <th>Équipement</th>
+                                                        <th>Date prévue</th>
+                                                        <th>Type</th>
+                                                        <th class="pe-3 text-end">Statut</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-if="state.recentInterventions.length === 0">
+                                                        <tr>
+                                                            <td colspan="5" class="text-center p-4 text-muted">Aucune intervention récente</td>
+                                                        </tr>
+                                                    </t>
+                                                    <t t-foreach="state.recentInterventions" t-as="inv" t-key="inv.id">
+                                                        <tr>
+                                                            <td class="ps-3 fw-bold"><t t-esc="inv.name"/></td>
+                                                            <td><t t-esc="inv.equipment_name"/></td>
+                                                            <td><t t-esc="inv.date_start"/></td>
+                                                            <td><t t-esc="inv.type === 'preventive' ? 'Préventive' : 'Curative'"/></td>
+                                                            <td class="pe-3 text-end">
+                                                                <span class="badge rounded-pill" t-attf-class="{{
+                                                                    inv.state === 'draft' ? 'text-bg-info' :
+                                                                    inv.state === 'in_progress' ? 'text-bg-warning' :
+                                                                    inv.state === 'done' ? 'text-bg-success' : 'text-bg-secondary'
+                                                                }}">
+                                                                    <t t-esc="inv.state === 'draft' ? 'Brouillon' :
+                                                                            inv.state === 'in_progress' ? 'En cours' :
+                                                                            inv.state === 'done' ? 'Terminé' : 'Annulé'"/>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Séquence pour les interventions -->
+        <record id="seq_it_intervention" model="ir.sequence">
+            <field name="name">Intervention IT</field>
+            <field name="code">it.intervention</field>
+            <field name="prefix">INT</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <!-- Paramètres système -->
+        <record id="param_warranty_alert_threshold" model="ir.config_parameter">
+            <field name="key">it_parc.warranty_alert_threshold</field>
+            <field name="value">30</field>
+        </record>
+
+        <record id="param_contract_alert_threshold" model="ir.config_parameter">
+            <field name="key">it_parc.contract_alert_threshold</field>
+            <field name="value">30</field>
+        </record>
+
+        <!-- Tâche planifiée pour les alertes de garantie -->
+        <record id="cron_warranty_alerts" model="ir.cron">
+            <field name="name">IT Parc: Vérification des garanties expirantes</field>
+            <field name="model_id" ref="model_it_alerte"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_warranty_expiration()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Tâche planifiée pour les alertes de contrat -->
+        <record id="cron_contract_alerts" model="ir.cron">
+            <field name="name">IT Parc: Vérification des contrats expirants</field>
+            <field name="model_id" ref="model_it_contract"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_expiring_contracts()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

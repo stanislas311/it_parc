@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_it_report_inventory_form" model="ir.ui.view">
+            <field name="name">it.report.inventory.form</field>
+            <field name="model">it.report.inventory</field>
+            <field name="arch" type="xml">
+                <form string="Rapport d'inventaire">
+                    <group>
+                        <p class="text-muted">
+                            Générez un rapport PDF de l'inventaire filtré par département et/ou catégorie.
+                        </p>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="department_id"/>
+                            <field name="category_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_print_report" string="Générer le PDF" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_it_report_inventory" model="ir.actions.act_window">
+            <field name="name">Rapport d'inventaire</field>
+            <field name="res_model">it.report.inventory</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_it_report_maintenance_form" model="ir.ui.view">
+            <field name="name">it.report.maintenance.form</field>
+            <field name="model">it.report.maintenance</field>
+            <field name="arch" type="xml">
+                <form string="Historique des maintenances">
+                    <group>
+                        <p class="text-muted">
+                            Générez un rapport PDF des interventions terminées sur une période donnée.
+                        </p>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_print_report" string="Générer le PDF" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_it_report_maintenance" model="ir.actions.act_window">
+            <field name="name">Historique maintenances</field>
+            <field name="res_model">it.report.maintenance</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_it_report_inventory"
+                  name="Rapport inventaire PDF"
+                  parent="menu_it_equipment"
+                  action="action_it_report_inventory"
+                  groups="it_parc.group_it_technicien"
+                  sequence="20"/>
+        <menuitem id="menu_it_report_maintenance"
+                  name="Historique maintenances PDF"
+                  parent="menu_it_intervention"
+                  action="action_it_report_maintenance"
+                  groups="it_parc.group_it_technicien"
+                  sequence="20"/>
+
+        <!-- Actions de Serveur pour Exports Excel -->
+        <record id="action_export_inventory_excel" model="ir.actions.server">
+            <field name="name">Export Excel : Inventaire</field>
+            <field name="model_id" ref="model_it_equipment"/>
+            <field name="binding_model_id" ref="model_it_equipment"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_export_inventory_excel()</field>
+        </record>
+
+        <record id="action_export_costs_excel" model="ir.actions.server">
+            <field name="name">Export Excel : Coûts de maintenance</field>
+            <field name="model_id" ref="model_it_intervention"/>
+            <field name="binding_model_id" ref="model_it_intervention"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_export_costs_excel()</field>
+        </record>
+
+        <record id="action_export_expiring_excel" model="ir.actions.server">
+            <field name="name">Export Excel : Contrats expirants (60j)</field>
+            <field name="model_id" ref="model_it_contract"/>
+            <field name="binding_model_id" ref="model_it_contract"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_export_expiring_excel()</field>
+        </record>
+    </data>
+</odoo>
